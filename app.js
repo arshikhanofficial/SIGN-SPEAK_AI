@@ -1171,6 +1171,10 @@ function stopCamera() {
   state.recentSigns = [];
   state.nullFrames = 0;
   state.lastRenderedKey = "";
+  if (state.autoAdvanceTimer) {
+    clearTimeout(state.autoAdvanceTimer);
+    state.autoAdvanceTimer = null;
+  }
   refs.cameraPreview.pause();
   refs.cameraPreview.srcObject = null;
   refs.cameraPreview.classList.remove("is-active");
@@ -1689,10 +1693,10 @@ function classifyTwoHandSign(fA, fB, sA, sB) {
     return { label: "Doctor", confidence: 0.92, handCount: 2 };
   }
 
-  // Two-hand Medicine: middle finger touching the other hand's palm center
+  // Two-hand Medicine: middle finger of a non-open hand touching the other hand's palm center
   if (
-    (fB.fingersUp >= 4 && dist2D(a[12], b[9]) < avgPalm * 0.58) ||
-    (fA.fingersUp >= 4 && dist2D(b[12], a[9]) < avgPalm * 0.58)
+    (fA.fingersUp <= 3 && fB.fingersUp >= 4 && dist2D(a[12], b[9]) < avgPalm * 0.58) ||
+    (fB.fingersUp <= 3 && fA.fingersUp >= 4 && dist2D(b[12], a[9]) < avgPalm * 0.58)
   ) {
     return { label: "Medicine", confidence: 0.91, handCount: 2 };
   }
