@@ -1205,6 +1205,10 @@ h3 {
     min-height: 72vh;
   }
 
+  .hero-media {
+    object-position: 70% center;
+  }
+
   .hero-shade {
     background: linear-gradient(0deg, rgba(8, 29, 27, 0.88), rgba(8, 29, 27, 0.52));
   }
